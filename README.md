@@ -24,4 +24,5 @@ También puedes conectar conmigo en:
 *  [**YouTube**](https://www.youtube.com/@gg1one)
 
 ---
+También te puede interesar:
 * Aprende N8N desde 0 en [skool.com/the-betts-ai](https://www.skool.com/the-betts-ai/about?ref=60759ea4946d47a380a386034086e365)
