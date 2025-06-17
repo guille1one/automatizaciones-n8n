@@ -17,6 +17,6 @@ Colección de flujos prácticos para n8n, listos para importar y adaptar.
 ---  
 También puedes conectar conmigo en:
 
-* **LinkedIn:** [Guillermo Gutiérrez](https://www.linkedin.com/in/ggd79/)
+*  [**LinkedIn:**](https://www.linkedin.com/in/ggd79/)
 
-* **YouTube:** [Canal de Guillermo Gutiérrez](https://www.youtube.com/@gg1one)
+*  [**YouTube**](https://www.youtube.com/@gg1one)
