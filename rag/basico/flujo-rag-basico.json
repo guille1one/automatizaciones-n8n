@@ -1,0 +1,617 @@
+{
+  "name": "rag",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Carga de archivos",
+        "formDescription": "solo pdf y txt",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "data",
+              "fieldType": "file",
+              "acceptFileTypes": ".pdf, .txt",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        20
+      ],
+      "id": "5c20de56-43bd-486d-a5a1-8178524172bf",
+      "name": "On form submission",
+      "webhookId": "479a2199-3273-46d5-b6e8-26d389dc859f"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "vector_store_key",
+          "mode": "list",
+          "cachedResultName": "vector_store_key"
+        },
+        "clearStore": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        20
+      ],
+      "id": "a1ccdb78-5024-4057-8fc6-55f4b1f59d17",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        540,
+        220
+      ],
+      "id": "872a0e3b-70e9-40b2-bc62-2cc3a9af0136",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "content": "## Carga de archivos",
+        "height": 700,
+        "width": 780,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        -200
+      ],
+      "typeVersion": 1,
+      "id": "8c85d2ca-f064-4f9a-a2eb-8489d1aa9d96",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        620
+      ],
+      "id": "3c088476-525a-49ec-a1d1-491e9dfdbc2f",
+      "name": "When chat message received",
+      "webhookId": "b11f7f20-d287-4907-b75d-7748a7bb4a42"
+    },
+    {
+      "parameters": {
+        "content": "## Rag Agent ",
+        "height": 620,
+        "width": 940,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        520
+      ],
+      "typeVersion": 1,
+      "id": "76cfc70b-9ccd-417a-83b6-f2d99f778485",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Eres un asistente experto en nutrición y bienestar. Tu única fuente de verdad es la información contenida en la herramienta `base_de_conocimiento`.\n\nCuando un usuario te haga una pregunta:\n1.  Busca la respuesta únicamente dentro de la `base_de_conocimiento`.\n2.  Sintetiza la información encontrada para dar una respuesta clara y directa.\n3.  Nunca proporciones información de tu conocimiento general. Basa tu respuesta exclusivamente en los datos recuperados.\n4.  Si no encuentras una respuesta en la base de conocimientos, responde amablemente: \"No he encontrado información sobre este tema en mis documentos. ¿Puedo ayudarte con algo más?\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        480,
+        620
+      ],
+      "id": "4f37ce6f-adf3-4355-a9f7-b6f8d0c1a6fa",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        840
+      ],
+      "id": "9ad1d97f-da1a-44d3-924d-ebcc66160b10",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "VpOIBzlnS5urvrM6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        540,
+        840
+      ],
+      "id": "56a53f43-4083-48ff-8039-b1f70e310a01",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1024
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        680,
+        980
+      ],
+      "id": "75e531f6-5d9a-4849-9f55-394aa7047ef3",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "VpOIBzlnS5urvrM6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 512
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        220
+      ],
+      "id": "60591985-e98a-42d8-a1dc-136e987944c9",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "VpOIBzlnS5urvrM6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        300
+      ],
+      "id": "a95ac6fc-b361-48db-9409-c286f6996c1e",
+      "name": "Qdrant Vector Store",
+      "credentials": {
+        "qdrantApi": {
+          "id": "Nm3oZP2yH3SVoQxi",
+          "name": "QdrantApi account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        -80
+      ],
+      "id": "b185b31c-24d7-4a70-8402-ef69f92be0fb",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "88wMQ44EKV9hq2mw",
+          "name": "Supabase account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        100
+      ],
+      "id": "22c17437-56c4-497c-a8c2-14be7d26f044",
+      "name": "Pinecone Vector Store",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Bases de datos vectoriales",
+        "height": 700,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1540,
+        -200
+      ],
+      "typeVersion": 1,
+      "id": "91da07bf-e710-4843-b2ca-64a93b17e408",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        },
+        "prompt": "Listame los id de los documentos en la base de datos",
+        "topK": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        1180,
+        -100
+      ],
+      "id": "e0671fa5-d3b6-40c6-bf9a-dc8d2796d5c2",
+      "name": "contenido db"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        980,
+        -100
+      ],
+      "id": "05955449-9f5b-4752-8b65-a8c618383903",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1024
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1180,
+        80
+      ],
+      "id": "4250d940-03e9-4cca-986d-d018a5a9d131",
+      "name": "Embeddings OpenAI3",
+      "credentials": {
+        "openAiApi": {
+          "id": "VpOIBzlnS5urvrM6",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Comprobar vectorizacion de contenido",
+        "height": 440,
+        "width": 640,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        880,
+        -200
+      ],
+      "typeVersion": 1,
+      "id": "6516f8f2-7fe9-4741-8aec-6f213851ce65",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "description": "esta tool dara información a las preguntas del usuario"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        1160,
+        680
+      ],
+      "id": "17db569f-0531-45ca-bf6e-cfdb7382d61d",
+      "name": "Answer questions with a vector store",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        840
+      ],
+      "id": "8f921f4d-7933-4278-abdc-308809d1c1a2",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "VpOIBzlnS5urvrM6",
+          "name": "OpenAi account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "base_de_conocimiento",
+        "toolDescription": "Base de conocimientos vectorial",
+        "memoryKey": {
+          "__rl": true,
+          "value": "vector_store_key",
+          "mode": "list",
+          "cachedResultName": "vector_store_key"
+        },
+        "topK": 20,
+        "includeDocumentMetadata": false
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        680,
+        820
+      ],
+      "id": "71642aa2-154c-4354-a621-d788e7bf8f8a",
+      "name": "Simple Vector Store1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "chunkSize": 512,
+        "chunkOverlap": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        520,
+        380
+      ],
+      "id": "90ef27e1-b097-44e5-b029-247571d9f49f",
+      "name": "Token Splitter"
+    },
+    {
+      "parameters": {
+        "content": "## Mejoras\nPuedes añadir antes del simple vector storage este modulo para mejorar la respuesta al usuario",
+        "height": 500,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1060,
+        520
+      ],
+      "typeVersion": 1,
+      "id": "f23d8c9a-84c6-40da-ab4c-3a58f221f142",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "main": [
+        []
+      ]
+    },
+    "Simple Vector Store": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "contenido db",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "contenido db",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ea6f07d2-1685-4a5f-917a-11f439c66abe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "459ae15000ba39382b53ff485aa2a4d650e3def961f6593523d72255904073dd"
+  },
+  "id": "C6IRdA4c6a1Xz7e4",
+  "tags": []
+}
