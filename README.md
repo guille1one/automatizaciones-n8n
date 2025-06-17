@@ -1,10 +1,13 @@
 # 🤖 Automatizaciones con n8n  
 Ejemplos esenciales de n8n para automatizar tareas comunes. Ideal para aprender y adaptar.
 
+## 📂 Categorias disponibles
+- [**`/rag/`**](https://github.com/guille1one/automatizaciones-n8n/tree/main/rag/): Agente Rag básico para practicar
+
 Colección de flujos prácticos para n8n, listos para importar y adaptar.  
 
 ## 📂 Flujos disponibles  
-- **`/Rag-agent/básico`**: Agente Rag básico para practicar.
+- [**`/rag/básico`**](https://github.com/guille1one/automatizaciones-n8n/tree/main/rag/basico): Agente Rag básico para practicar.
 - *(Se irán añadiendo más)*  
 
 ## 🚀 ¿Cómo usar?  
